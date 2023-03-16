@@ -1,0 +1,33 @@
+name: ThePlugin
+version: '${project.version}'
+main: me.atemzy.theplugin.ThePlugin
+author: Atemzy
+description: If you have questions, contact me via Discord (Atemzy#6921)
+api-version: 1.19
+load: STARTUP
+commands:
+  deleteAc:
+    description: Delete an account!(Op only)
+    usage: /<command> player-name
+    permission: getAllPlayer
+  register:
+    description: Register your account!
+    usage: /<command> password confirm-password
+  login:
+    description: Login to your account!
+    usage: /<command> password
+  getAllPlayer:
+    description: Get all of the players...
+    usage: /notes <command>
+    permission: getAllPlayer
+  forgot_password:
+    description: Get help to recover your password
+    usage: /<command>
+  menu:
+    description: Get all of the accounts...
+    usage: /notes <command>
+    permission: getAllPlayer
+permissions:
+  getAllPlayer:
+    description: Th permission to get All online Player an their inv.
+    default: op

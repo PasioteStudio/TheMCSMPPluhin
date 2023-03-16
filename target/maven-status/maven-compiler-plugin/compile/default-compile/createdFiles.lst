@@ -1,0 +1,14 @@
+me\atemzy\theplugin\ThePlugin$1.class
+me\atemzy\theplugin\models\Note.class
+me\atemzy\theplugin\commands\forgotloginCommand.class
+me\atemzy\theplugin\commands\registerCommand.class
+me\atemzy\theplugin\commands\loginCommand.class
+me\atemzy\theplugin\utils\NoteStorageUtils.class
+me\atemzy\theplugin\menu\PlayerMenuUtility1.class
+me\atemzy\theplugin\ThePlugin$2.class
+me\atemzy\theplugin\models\loginPotionEffects.class
+me\atemzy\theplugin\commands\getAllPlayerCommand.class
+me\atemzy\theplugin\menu\ListAllPlayer.class
+me\atemzy\theplugin\commands\teste.class
+me\atemzy\theplugin\menu\PlayerInvMenu.class
+me\atemzy\theplugin\commands\deleteAccountCommand.class
