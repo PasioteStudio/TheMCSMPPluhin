@@ -33,16 +33,17 @@ public class getAllPlayerCommand extends SubCommand {
 
     @Override
     public void perform(CommandSender commandSender, String[] strings) {
-        if (commandSender instanceof Player) {
-            if (!commandSender.isOp()){
+        if (!(commandSender instanceof Player)) return;
 
-            }else {
-                try {
-                    MenuManager.openMenu(ListAllPlayer.class, (Player) commandSender);
-                } catch (MenuManagerException | MenuManagerNotSetupException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        if (!commandSender.isOp()){ // gondolom ide jön valami
+
+            return;
+        }
+
+        try {
+            MenuManager.openMenu(ListAllPlayer.class, (Player) commandSender);
+        } catch (MenuManagerException | MenuManagerNotSetupException e) {
+            throw new RuntimeException(e);
         }
     }
 

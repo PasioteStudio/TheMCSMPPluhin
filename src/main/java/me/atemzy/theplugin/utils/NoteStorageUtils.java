@@ -6,7 +6,9 @@ import me.atemzy.theplugin.models.Note;
 import org.bukkit.entity.Player;
 
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class NoteStorageUtils {
 
@@ -79,7 +81,7 @@ public class NoteStorageUtils {
         for (Note note : Thenotes){
             if (note.getId().equalsIgnoreCase(id)) {
                 note.setPlayerName((newNote.getPlayerName()));
-                note.setPsw((newNote.getPsw()));
+                note.setPsw((newNote.GetHashedPsw()));
                 note.setLastWorld(newNote.getLastWorld());
                 note.setLastX(newNote.getLastX());
                 note.setLastY(newNote.getLastY());

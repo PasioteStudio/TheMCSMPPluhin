@@ -14,7 +14,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class registerCommand  implements CommandExecutor {
+public class registerCommand  implements CommandExecutor
+{
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {

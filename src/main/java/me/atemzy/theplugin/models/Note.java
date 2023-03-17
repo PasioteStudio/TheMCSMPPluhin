@@ -1,5 +1,7 @@
 package me.atemzy.theplugin.models;
 
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -7,7 +9,7 @@ public class Note {
 
     private String id;
     private String playerName;
-    private String psw;
+    private String hashed_psw;
     private Date dateCreated;
 
     private String LastWorld;
@@ -17,18 +19,19 @@ public class Note {
     private double LastZ;
     private boolean IsInWorld;
 
-    public Note(String playerName, String psw, String LastWorld, double LastX,double LastY,double LastZ, boolean IsInWorld) {
+    public Note(String playerName, String raw_psw, String LastWorld, double LastX,double LastY,double LastZ, boolean IsInWorld) {
         this.playerName = playerName;
-        this.psw = psw;
+
+        this.setPsw(raw_psw);
+
         this.dateCreated = new Date();
-        this.id= UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
         this.LastWorld = LastWorld;
         this.LastX = LastX;
         this.LastY = LastY;
         this.LastZ = LastZ;
         this.IsInWorld = IsInWorld;
     }
-
     public String getId() {
         return id;
     }
@@ -80,12 +83,18 @@ public class Note {
         this.playerName = playerName;
     }
 
-    public String getPsw() {
-        return psw;
+    public String GetHashedPsw() {
+        return hashed_psw;
     }
 
     public void setPsw(String psw) {
-        this.psw = psw;
+        AES aes = null;
+        try {
+            aes = new AES();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        this.hashed_psw = aes.Encrypt(psw);
     }
 
     public Date getDateCreated() {

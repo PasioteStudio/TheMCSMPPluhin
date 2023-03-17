@@ -19,10 +19,10 @@ public class PlayerMenuUtility1 extends PlayerMenuUtility {
 
     private static String playerName;
 
-    public static String getNoteToDeleete() {
+    public static String getNoteToDelete() {
         return noteToDeleete;
     }
 
-    public static void setNoteToDeleete(String noteToDeleete1) {noteToDeleete = noteToDeleete1;
+    public static void setNoteToDelete(String noteToDeleete1) {noteToDeleete = noteToDeleete1;
     }
 }

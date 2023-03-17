@@ -85,13 +85,10 @@ public final class ThePlugin extends JavaPlugin implements Listener{
                         }
                     }
                     if(volta){
-                        newnota = new Note(nota.getPlayerName(), nota.getPsw(), p.getWorld().getName(), p.getLocation().getX(),  p.getLocation().getY(),  p.getLocation().getZ(), false);
+                        newnota = new Note(nota.getPlayerName(), nota.GetHashedPsw(), p.getWorld().getName(), p.getLocation().getX(),  p.getLocation().getY(),  p.getLocation().getZ(), false);
                     }else{
-                        newnota = new Note(nota.getPlayerName(), nota.getPsw(), nota.getLastWorld(), nota.getLastX(), nota.getLastY(), nota.getLastZ(), false);
+                        newnota = new Note(nota.getPlayerName(), nota.GetHashedPsw(), nota.getLastWorld(), nota.getLastX(), nota.getLastY(), nota.getLastZ(), false);
                     }
-
-
-
                     NoteStorageUtils.updateNote(nota.getId(), newnota);
 
                 }
@@ -171,7 +168,7 @@ public final class ThePlugin extends JavaPlugin implements Listener{
                 if (note.getPlayerName().equalsIgnoreCase(p.getName())) {
                     if (note.getIsInWorld()) {
                         if (!p.getWorld().getName().equals( "loginHub")){
-                            Note newnote = new Note(p.getName(), note.getPsw(), p.getWorld().getName(), p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ(), false);
+                            Note newnote = new Note(p.getName(), note.GetHashedPsw(), p.getWorld().getName(), p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ(), false);
                             NoteStorageUtils.updateNote(note.getId(), newnote);
 
 
@@ -200,10 +197,10 @@ public final class ThePlugin extends JavaPlugin implements Listener{
 
                             Note newnote;
                             if (p.getBedSpawnLocation() != null) {
-                                newnote = new Note(p.getName(), note.getPsw(), p.getWorld().getName(), p.getBedSpawnLocation().getX(), p.getBedSpawnLocation().getY(), p.getBedSpawnLocation().getZ(), false);
+                                newnote = new Note(p.getName(), note.GetHashedPsw(), p.getWorld().getName(), p.getBedSpawnLocation().getX(), p.getBedSpawnLocation().getY(), p.getBedSpawnLocation().getZ(), false);
 
                             } else {
-                                newnote = new Note(p.getName(), note.getPsw(), p.getWorld().getName(), p.getWorld().getSpawnLocation().getX(), p.getWorld().getSpawnLocation().getY(), p.getWorld().getSpawnLocation().getZ(), false);
+                                newnote = new Note(p.getName(), note.GetHashedPsw(), p.getWorld().getName(), p.getWorld().getSpawnLocation().getX(), p.getWorld().getSpawnLocation().getY(), p.getWorld().getSpawnLocation().getZ(), false);
                             }
                             NoteStorageUtils.updateNote(note.getId(), newnote);
                             System.out.println("Died succesfuly");
