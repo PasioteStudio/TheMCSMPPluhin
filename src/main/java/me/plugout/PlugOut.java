@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -86,6 +87,9 @@ public final class PlugOut extends JavaPlugin implements Listener {
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent pje){
         Player _player = pje.getPlayer();
+        _player.getInventory().setContents(new ItemStack[]{});
+        _player.getInventory().setArmorContents(new ItemStack[]{});
+        _player.updateInventory();
         pje.setJoinMessage(ChatColor.GREEN + "++ " + _player.getDisplayName());
         FileConfiguration config = getConfig();
 
@@ -104,7 +108,6 @@ public final class PlugOut extends JavaPlugin implements Listener {
     public void OnPlayerQuit(PlayerQuitEvent pqe){
         Player _player = pqe.getPlayer();
         pqe.setQuitMessage(ChatColor.RED + "-- " + _player.getDisplayName());
-        QuickLog(_player.getDisplayName() + " ::: " + String.valueOf(_player.getLocation()));
     }
 
 
