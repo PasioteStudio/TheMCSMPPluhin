@@ -1,7 +1,9 @@
 package me.plugout;
 
 import commands.RegisterCommand;
+import commands.SetGlobalSpawn;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
@@ -22,6 +24,9 @@ public final class PlugOut extends JavaPlugin implements Listener {
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("register").setExecutor(new RegisterCommand());
+        getCommand("setspawn").setExecutor(new SetGlobalSpawn());
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
     }
 
     @Override
