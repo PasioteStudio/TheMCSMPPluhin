@@ -14,7 +14,20 @@ commands:
     permission-message: Somehow, you managed to fuck up the simplest part of the server. Good job.
     usage: /register <password> <verify-password>
 
+  setglobalspawn:
+    description: Set the spawn location of players upon joining the server.
+    aliases: setgspawn
+    permission: player.setglobalspawn
+    permission-message: Nah mate, I don't think so. Ask an admin if you want to get your ass yeeted.
+    tab-complete: 0
+    usage: /setglobalspawn [toggle|invulnerability|(nothing)]
+
+
 permissions:
   player.register:
     description: Allows the player to register.
     default: true
+
+  player.setglobalspawn:
+    description: Allows the admin to set login spawn.
+    default: op

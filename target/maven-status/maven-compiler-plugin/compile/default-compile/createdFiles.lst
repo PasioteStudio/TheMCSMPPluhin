@@ -1,1 +1,3 @@
 commands\RegisterCommand.class
+commands\SetGlobalSpawn.class
+commands\SetGlobalSpawnCompleter.class
