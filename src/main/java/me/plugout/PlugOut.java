@@ -24,7 +24,7 @@ import org.bukkit.configuration.Configuration;
 
 import java.io.File;
 
-
+//
 public final class PlugOut extends JavaPlugin implements Listener {
     public void QuickLog(String message){
         String prefix = "[POU]";
