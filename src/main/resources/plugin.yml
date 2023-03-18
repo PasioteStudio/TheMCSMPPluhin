@@ -1,0 +1,20 @@
+name: PlugOut
+version: '${project.version}'
+main: me.plugout.PlugOut
+api-version: 1.19
+prefix: POU
+load: STARTUP
+authors: [Atemzy, Galeen]
+website: https://www.galeen.hu/
+commands:
+  register:
+    description: Set the password for a new user. Usable only if user is not yet registered.
+    aliases: register
+    permission: player.register
+    permission-message: Somehow, you managed to fuck up the simplest part of the server. Good job.
+    usage: /register <password> <verify-password>
+
+permissions:
+  player.register:
+    description: Allows the player to register.
+    default: true

@@ -1,0 +1,8 @@
+name: PlugOut
+version: '1.0-SNAPSHOT'
+main: me.plugout.PlugOut
+api-version: 1.19
+prefix: POU
+load: STARTUP
+authors: [Atemzy, Galeen]
+website: https://www.galeen.hu/
