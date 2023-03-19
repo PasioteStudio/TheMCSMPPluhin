@@ -23,6 +23,15 @@ public class RegisterCommand implements CommandExecutor {
         if(!(sender instanceof Player )) return false; // can only be executed by a player.
         if(args.length != 2 || cmd == null || label == null) return false; // we need DATA, people, we need DATA!
         Player p = (Player) sender;
+        PlayerNote search = NoteStorageUtil.ReadPlayerNote(p);
+        if(search != null){
+            p.sendMessage(
+                    ChatColor.AQUA + "[Register] " + ChatColor.YELLOW + "There is an account with this name already. Try logging in with" + ChatColor.AQUA + " /login" + ChatColor.YELLOW + "!"
+            );
+
+            return true;
+        }
+
         FileConfiguration conf = PlugOut.GetPlugin().getConfig();
         String passw1 = args[0];
         String passw2 = args[1];
