@@ -1,11 +1,21 @@
 package commands;
 
+import me.plugout.PlugOut;
+import models.PlayerNote;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.Command;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import utils.NoteStorageUtil;
+
+import java.io.IOException;
 
 public class RegisterCommand implements CommandExecutor {
     @Override
@@ -13,7 +23,7 @@ public class RegisterCommand implements CommandExecutor {
         if(!(sender instanceof Player )) return false; // can only be executed by a player.
         if(args.length != 2 || cmd == null || label == null) return false; // we need DATA, people, we need DATA!
         Player p = (Player) sender;
-
+        FileConfiguration conf = PlugOut.GetPlugin().getConfig();
         String passw1 = args[0];
         String passw2 = args[1];
 
@@ -22,7 +32,24 @@ public class RegisterCommand implements CommandExecutor {
             p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
             return true;
         }
+        PlayerNote playerNote = new PlayerNote(p.getName(), p);
+        playerNote.SetPlayerPassw(passw1);
 
+        World toWorld = PlugOut.GetPlugin().getServer().getWorld(conf.getString("playWorlds"));
+        p.teleport(toWorld.getSpawnLocation());
+        p.setInvulnerable(false);
+        Location loc = p.getLocation();
+        double[] playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
+        ItemStack[] playWorldInv = p.getInventory().getContents();
+
+        playerNote.SetPlayWorldPos(playWorldPos);
+        playerNote.SetPlayWorldInv(playWorldInv);
+        PlugOut.QuickLog("I'm about to save the note.");
+        try {
+            NoteStorageUtil.SavePlayerNote(playerNote);
+        } catch (Exception e) {
+            PlugOut.QuickLog(String.valueOf(e));
+        }
 
         return true;
     }

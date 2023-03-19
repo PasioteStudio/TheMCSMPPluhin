@@ -27,12 +27,20 @@ import java.io.File;
 
 //
 public final class PlugOut extends JavaPlugin implements Listener {
-    public void QuickLog(String message){
+    private static PlugOut PLUGIN;
+    public PlugOut(){
+        PLUGIN = this;
+    }
+    public static PlugOut GetPlugin(){
+        return PLUGIN;
+    }
+    public static void QuickLog(String message){
         String prefix = "[POU]";
         System.out.println(prefix + " " + message);
     }
     @Override
     public void onEnable() {
+        PLUGIN = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
         getServer().getPluginManager().registerEvents(this, this);

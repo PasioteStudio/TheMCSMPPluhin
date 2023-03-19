@@ -6,6 +6,10 @@ prefix: POU
 load: STARTUP
 authors: [Atemzy, Galeen]
 website: https://www.galeen.hu/
+depend:
+  - Multiverse-Core
+loadbefore:
+  - Multiverse-Core
 commands:
   register:
     description: Set the password for a new user. Usable only if user is not yet registered.
