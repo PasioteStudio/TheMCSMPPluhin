@@ -21,10 +21,23 @@ commands:
   setglobalspawn:
     description: Set the spawn location of players upon joining the server.
     aliases: setgspawn
-    permission: player.setglobalspawn
+    permission: admin.setglobalspawn
     permission-message: Nah mate, I don't think so. Ask an admin if you want to get your ass yeeted.
     tab-complete: 0
     usage: /setglobalspawn [toggle|invulnerability|(nothing)]
+
+  login:
+    description: Allows user to log into existing account.
+    tab-complete: 0
+    usage: /login <password>
+    permission-message: Somehow, you managed to fuck up the simplest part of the server. Good job.
+
+  testme:
+    description: test
+    tab-complete: 0
+    usage: /testme
+    permission: admin.testme
+    permission-message: Nah.
 
 
 permissions:
@@ -32,6 +45,9 @@ permissions:
     description: Allows the player to register.
     default: true
 
-  player.setglobalspawn:
+  admin.setglobalspawn:
     description: Allows the admin to set login spawn.
+    default: op
+  admin.testme:
+    description: Allows the admin test.
     default: op

@@ -1,7 +1,9 @@
 commands\RegisterCommand.class
+commands\TestCommand.class
 models\Note.class
 commands\SetGlobalSpawnCompleter.class
 utils\Security.class
+commands\LoginCommand.class
 commands\SetGlobalSpawn.class
 utils\NoteStorageUtil.class
 models\PlayerNote.class

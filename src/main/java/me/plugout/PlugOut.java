@@ -1,9 +1,6 @@
 package me.plugout;
 
-import commands.LoginCommand;
-import commands.RegisterCommand;
-import commands.SetGlobalSpawn;
-import commands.SetGlobalSpawnCompleter;
+import commands.*;
 import models.PlayerNote;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -52,6 +49,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
         getCommand("setglobalspawn").setExecutor(new SetGlobalSpawn(this));
         getCommand("setglobalspawn").setTabCompleter(new SetGlobalSpawnCompleter());
         getCommand("login").setExecutor(new LoginCommand());
+        getCommand("testme").setExecutor(new TestCommand());
     }
 
     @Override
@@ -131,7 +129,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
         Location loc = _player.getLocation();
         playerNote.playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
         Inventory inv = _player.getInventory();
-        playerNote.playWorldInv = inv.getContents();
+        playerNote.playWorldInv = PlayerNote.InvToJson(inv);
 
         try {
             NoteStorageUtil.SavePlayerNote(playerNote);

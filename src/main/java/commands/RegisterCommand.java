@@ -2,16 +2,15 @@ package commands;
 
 import me.plugout.PlugOut;
 import models.PlayerNote;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 import utils.NoteStorageUtil;
 
@@ -49,7 +48,8 @@ public class RegisterCommand implements CommandExecutor {
         p.setInvulnerable(false);
         Location loc = p.getLocation();
         double[] playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
-        ItemStack[] playWorldInv = p.getInventory().getContents();
+
+        Inventory playWorldInv = p.getInventory();
 
         playerNote.SetPlayWorldPos(playWorldPos);
         playerNote.SetPlayWorldInv(playWorldInv);

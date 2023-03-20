@@ -3,6 +3,7 @@ package utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import me.plugout.PlugOut;
 import models.Note;
 import models.PlayerNote;
@@ -25,6 +26,7 @@ public class NoteStorageUtil {
         FileWriter writer = new FileWriter(p);
 
         String json = gson.toJson(playerNote);
+        PlugOut.QuickLog("toJson: " + json);
         writer.write(json);
         writer.close();
     }
@@ -38,7 +40,7 @@ public class NoteStorageUtil {
         try {
             playerNote = gson.fromJson(new FileReader(p), PlayerNote.class);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            return playerNote;
         }
 
         return playerNote;
