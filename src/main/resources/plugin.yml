@@ -26,6 +26,12 @@ commands:
     tab-complete: 0
     usage: /setglobalspawn [toggle|invulnerability|(nothing)]
 
+  login:
+    description: Allows user to log into existing account.
+    tab-complete: 0
+    usage: /login <password>
+    permission-message: Somehow, you managed to fuck up the simplest part of the server. Good job.
+
 
 permissions:
   player.register:
