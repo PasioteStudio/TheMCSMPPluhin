@@ -56,9 +56,25 @@ public class PlayerNote extends Note{
         Gson gson = new Gson();
 
         for(int i = 0; i < inv.getSize(); i++){
-            obj[i] = gson.fromJson(gson.toJson(new ItemStack(Material.AIR).serialize()), JsonObject.class);
+            try{
+                obj[i] = gson.fromJson(gson.toJson(inv.getItem(i).serialize()), JsonObject.class);
+            }catch (Exception e){
+                obj[i] = gson.fromJson(gson.toJson(new ItemStack(Material.AIR, 1).serialize()), JsonObject.class);
+            }
         }
 
         return obj;
+    }
+    public void SetInventory(Player p){
+        JsonObject[] inv = this.playWorldInv;
+
+        Gson gson = new Gson();
+        for(int i = 0; i < inv.length; i++){
+            ItemStack item = gson.fromJson(gson.toJson(inv[i]), ItemStack.class);
+            PlugOut.QuickLog(item.getType().toString());
+            if(item.getAmount() == 0) item.setAmount(1);
+
+            p.getInventory().setItem(i, item);
+        }
     }
 }

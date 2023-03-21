@@ -30,7 +30,7 @@ public class NoteStorageUtil {
         writer.write(json);
         writer.close();
     }
-    public static PlayerNote ReadPlayerNote(Player player){
+    public static PlayerNote ReadPlayerNote(Player player){ // cant read out the item sometimes?
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String p = PlugOut.GetPlugin().getDataFolder() + "\\players\\" + player.getName() + ".json";
         File path = new File(p);

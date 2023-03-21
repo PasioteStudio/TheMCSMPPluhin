@@ -1,5 +1,7 @@
 package commands;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import me.plugout.PlugOut;
 import models.PlayerNote;
 import org.bukkit.ChatColor;
@@ -38,6 +40,8 @@ public class LoginCommand implements CommandExecutor {
         World world = p.getServer().getWorld(conf.getString("playWorlds"));
         double[] pos = playerNote.playWorldPos;
         Location tpTo = new Location(world, pos[0], pos[1], pos[2]);
+
+        playerNote.SetInventory(player);
 
         player.teleport(tpTo);
         player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.GREEN + "Welcome, " + player.getName() + "!");
