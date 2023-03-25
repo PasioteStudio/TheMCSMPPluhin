@@ -1,5 +1,6 @@
 package models;
 
+
 import java.util.Date;
 
 public class Note {
@@ -13,6 +14,7 @@ public class Note {
         this.ID = ID;
         this.dateCreated = new Date();
     }
+    public Note(){}
     public String getID(){
         return this.ID;
     }

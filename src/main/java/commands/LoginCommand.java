@@ -23,7 +23,7 @@ public class LoginCommand implements CommandExecutor {
         Player player = ((Player) sender).getPlayer();
         PlayerNote playerNote = NoteStorageUtil.ReadPlayerNote(player);
         if(playerNote == null){
-            player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.YELLOW + "Try logging in with " + ChatColor.AQUA + "/login" + ChatColor.YELLOW + ".");
+            player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.YELLOW + "Try registering in with " + ChatColor.AQUA + "/register" + ChatColor.YELLOW + ".");
             return true;
         }
 
@@ -37,11 +37,13 @@ public class LoginCommand implements CommandExecutor {
         }
         PlugOut p = PlugOut.GetPlugin();
         FileConfiguration conf = p.getConfig();
-        World world = p.getServer().getWorld(conf.getString("playWorlds"));
+        World world = p.getServer().getWorld(playerNote.lastPlayWorld);
         double[] pos = playerNote.playWorldPos;
         Location tpTo = new Location(world, pos[0], pos[1], pos[2]);
 
-        playerNote.SetInventory(player);
+        playerNote.PreventZeroItems();
+
+        playerNote.ActualizePlayWorldInv(player);
 
         player.teleport(tpTo);
         player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.GREEN + "Welcome, " + player.getName() + "!");

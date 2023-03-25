@@ -27,11 +27,10 @@ public class SetGlobalSpawn implements CommandExecutor {
         FileConfiguration conf = plugin.getConfig();
 
         Location loc = p.getLocation();
-        // here is the info we need to safe into config.yml under loginSpawnLocation
+        // here is the info we need to save into config.yml under loginSpawnLocation
         String world = loc.getWorld().getName();
         double[] pos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
         if(args.length == 0) args = new String[]{""};
-        plugin.QuickLog(String.valueOf(args.length));
         // setting it
         if(args[0].equals("toggle")){
             boolean prev = conf.getBoolean("useLoginSpawn"); // a prev a previous. ugye pápa? commentek.
@@ -43,10 +42,8 @@ public class SetGlobalSpawn implements CommandExecutor {
             List<Player> players = _world.getPlayers();
             for(Player _p : players){
                 if(_p.getWorld() != _world) continue;
-                plugin.QuickLog(String.valueOf((!prev)));
                 _p.setInvulnerable(!prev);
             }
-
             return true;
         }
         if(args[0].equals("invulnerability")){
@@ -59,7 +56,6 @@ public class SetGlobalSpawn implements CommandExecutor {
             List<Player> players = _world.getPlayers();
             for(Player _p : players){
                 if(_p.getWorld() != _world) continue;
-                plugin.QuickLog(String.valueOf((!prev)));
                 _p.setInvulnerable(!prev);
             }
 

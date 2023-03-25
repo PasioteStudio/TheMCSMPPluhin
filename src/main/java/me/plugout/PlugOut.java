@@ -103,7 +103,6 @@ public final class PlugOut extends JavaPlugin implements Listener {
         _player.updateInventory();
         pje.setJoinMessage(ChatColor.GREEN + "++ " + _player.getDisplayName());
         FileConfiguration config = getConfig();
-
         boolean useGSpawn = config.getBoolean("useLoginSpawn");
         if(!useGSpawn) return;
         double x = config.getDouble("loginSpawnLocation.x");
@@ -129,7 +128,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
         Location loc = _player.getLocation();
         playerNote.playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
         Inventory inv = _player.getInventory();
-        playerNote.playWorldInv = PlayerNote.InvToJson(inv);
+        playerNote.SetPlayWorldInv(inv.getContents());
 
         try {
             NoteStorageUtil.SavePlayerNote(playerNote);

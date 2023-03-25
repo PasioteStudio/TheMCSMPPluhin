@@ -27,7 +27,6 @@ public class RegisterCommand implements CommandExecutor {
             p.sendMessage(
                     ChatColor.AQUA + "[Register] " + ChatColor.YELLOW + "There is an account with this name already. Try logging in with" + ChatColor.AQUA + " /login" + ChatColor.YELLOW + "!"
             );
-
             return true;
         }
 
@@ -43,7 +42,7 @@ public class RegisterCommand implements CommandExecutor {
         PlayerNote playerNote = new PlayerNote(p.getName(), p);
         playerNote.SetPlayerPassw(passw1);
 
-        World toWorld = PlugOut.GetPlugin().getServer().getWorld(conf.getString("playWorlds"));
+        World toWorld = PlugOut.GetPlugin().getServer().getWorld(conf.getString("defaultPlayWorld"));
         p.teleport(toWorld.getSpawnLocation());
         p.setInvulnerable(false);
         Location loc = p.getLocation();
@@ -53,6 +52,8 @@ public class RegisterCommand implements CommandExecutor {
 
         playerNote.SetPlayWorldPos(playWorldPos);
         playerNote.SetPlayWorldInv(playWorldInv);
+        playerNote.lastPlayWorld = conf.getString("defaultPlayWorld");
+
         PlugOut.QuickLog("I'm about to save the note.");
         try {
             NoteStorageUtil.SavePlayerNote(playerNote);
