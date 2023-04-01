@@ -26,13 +26,13 @@ import org.bukkit.configuration.Configuration;
 import utils.NoteStorageUtil;
 
 import java.io.File;
+import java.util.List;
 
 //
 public final class PlugOut extends JavaPlugin implements Listener {
     private static PlugOut PLUGIN;
-    public PlugOut(){
-        PLUGIN = this;
-    }
+    private static List<String> ops;
+    public PlugOut(){PLUGIN = this;}
     public static PlugOut GetPlugin(){
         return PLUGIN;
     }
@@ -45,6 +45,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
         PLUGIN = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
+        this.ops = getConfig().getStringList("admins");
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("register").setExecutor(new RegisterCommand());
         getCommand("setglobalspawn").setExecutor(new SetGlobalSpawn(this));

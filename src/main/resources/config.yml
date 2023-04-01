@@ -7,3 +7,4 @@ loginSpawnLocation:
   z: 0
   world: world
 defaultPlayWorld: playworld
+admins:
