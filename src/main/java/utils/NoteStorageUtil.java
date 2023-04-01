@@ -88,7 +88,6 @@ public class NoteStorageUtil {
         for(int i = 0; i < arr.length; i++){
             arr[i] = ItemStack.deserialize(playerConfig.getConfigurationSection("Inventory." + i).getValues(false));
             if(arr[i].getAmount() == 0) arr[i].setAmount(1);
-            PlugOut.QuickLog(String.valueOf(arr[i].getAmount()) + " x " + arr[i].getType().toString());
         }
         pNote.playWorldInv = arr;
         return pNote;

@@ -22,6 +22,10 @@ public class LoginCommand implements CommandExecutor {
         if(!(sender instanceof Player)) return false;
         if(args.length != 1) return false;
         Player player = ((Player) sender).getPlayer();
+        PlugOut plugin = PlugOut.GetPlugin();
+        if(player.getWorld() == plugin.getServer().getWorld(plugin.getConfig().getString("loginSpawnLocation.world"))){ // if already logged in
+            player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.YELLOW + "You are already logged in.");
+        }
         PlayerNote playerNote = NoteStorageUtil.ReadPlayerNote(player);
         if(playerNote == null){
             player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.YELLOW + "Try registering in with " + ChatColor.AQUA + "/register" + ChatColor.YELLOW + ".");
