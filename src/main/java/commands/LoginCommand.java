@@ -12,6 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import utils.NoteStorageUtil;
 import utils.Security;
 
@@ -41,7 +42,6 @@ public class LoginCommand implements CommandExecutor {
         double[] pos = playerNote.playWorldPos;
         Location tpTo = new Location(world, pos[0], pos[1], pos[2]);
 
-        playerNote.PreventZeroItems();
 
         playerNote.ActualizePlayWorldInv(player);
 

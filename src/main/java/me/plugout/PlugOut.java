@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
@@ -50,6 +51,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
         getCommand("setglobalspawn").setTabCompleter(new SetGlobalSpawnCompleter());
         getCommand("login").setExecutor(new LoginCommand());
         getCommand("testme").setExecutor(new TestCommand());
+
     }
 
     @Override
@@ -120,7 +122,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
         pqe.setQuitMessage(ChatColor.RED + "-- " + _player.getDisplayName());
         FileConfiguration conf = getConfig();
 
-        if(_player.getWorld() != getServer().getWorld(String.valueOf(conf.get("playWorlds")))) return;
+        if(_player.getWorld() == getServer().getWorld(String.valueOf(conf.get("loginSpawnLocation.world")))) return;
         PlayerNote playerNote = NoteStorageUtil.ReadPlayerNote(_player);
         if(playerNote == null) {
             throw new RuntimeException();
@@ -128,15 +130,38 @@ public final class PlugOut extends JavaPlugin implements Listener {
         Location loc = _player.getLocation();
         playerNote.playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
         Inventory inv = _player.getInventory();
-        playerNote.SetPlayWorldInv(inv.getContents());
-
+        playerNote.playWorldInv = inv.getContents();
         try {
+            QuickLog("saving...");
             NoteStorageUtil.SavePlayerNote(playerNote);
+            QuickLog("saved");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
+    @EventHandler
+    public void OnPlayerDeath(PlayerDeathEvent e){
+        Player p = e.getEntity();
+        FileConfiguration conf = getConfig();
+        World deathWorld = e.getEntity().getWorld();
+        World lobbyWorld = getServer().getWorld(getConfig().getString("loginSpawnLocation.world"));
+        if(deathWorld == lobbyWorld) { // just in case the player dies in the lobby
+            double lobbyX = conf.getDouble("loginSpawnLocation.x");
+            double lobbyY = conf.getDouble("loginSpawnLocation.y");
+            double lobbyZ = conf.getDouble("loginSpawnLocation.z");
+            Location to = new Location(lobbyWorld, lobbyX, lobbyY, lobbyZ);
+            p.spigot().respawn();
+            p.teleport(to);
+            return;
+        }
 
+        Location respawnLoc = e.getEntity().getBedSpawnLocation();
+        World playW = getServer().getWorld(conf.getString("defaultPlayWorld"));
+        if(respawnLoc.getWorld() == lobbyWorld) p.setBedSpawnLocation(playW.getSpawnLocation());
+
+
+        p.spigot().respawn();
+    }
 
 }

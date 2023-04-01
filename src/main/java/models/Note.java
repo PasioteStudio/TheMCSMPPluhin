@@ -1,6 +1,9 @@
 package models;
 
 
+import org.bukkit.configuration.file.FileConfiguration;
+
+import java.io.File;
 import java.util.Date;
 
 public class Note {
@@ -10,11 +13,11 @@ public class Note {
         return dateCreated;
     }
 
+
     public Note(String ID) {
         this.ID = ID;
         this.dateCreated = new Date();
     }
-    public Note(){}
     public String getID(){
         return this.ID;
     }

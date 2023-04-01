@@ -26,15 +26,13 @@ public class PlayerNote extends Note {
     public String playerName;
     public String hashed_passw;
     public double[] playWorldPos;
-    public JsonObject[] playWorldInv;
+    public ItemStack[] playWorldInv;
     public String lastPlayWorld;
 
     public PlayerNote(String ID, Player player) {
         super(ID);
-        SetPlayWorldInv(player);
+        this.playWorldInv = new ItemStack[player.getInventory().getSize()];
         this.playerName = player.getName();
-    }
-    public PlayerNote() {
     }
     public String SetPlayerPassw(String rawpass){
         //encrypt
@@ -45,34 +43,8 @@ public class PlayerNote extends Note {
     public void SetPlayWorldPos(double[] posArr){
         this.playWorldPos = posArr;
     }
-    public void SetPlayWorldInv(Inventory inv){
-        Gson gson = new Gson();
-        ItemStack[] stacks = inv.getContents();
-        this.playWorldInv = new JsonObject[stacks.length];
-        for(int i = 0; i < stacks.length; i++){
-            try{
-                this.playWorldInv[i] = gson.fromJson(gson.toJson(stacks[i].serialize()), JsonObject.class);
-            }catch (NullPointerException e){
-                this.playWorldInv[i] = gson.fromJson(gson.toJson(new ItemStack(Material.AIR, 1).serialize()), JsonObject.class);
-            }
 
-        }
-    }
-    public void SetPlayWorldInv(Player p){
-        SetPlayWorldInv(p.getInventory());
-    }
-    public void SetPlayWorldInv(ItemStack[] stacks){
-        Gson gson = new Gson();
-        this.playWorldInv = new JsonObject[stacks.length];
-        for(int i = 0; i < stacks.length; i++){
-            try{
-                this.playWorldInv[i] = gson.fromJson(gson.toJson(stacks[i].serialize()), JsonObject.class);
-            }catch (NullPointerException e){
-                this.playWorldInv[i] = gson.fromJson(gson.toJson(new ItemStack(Material.AIR, 1).serialize()), JsonObject.class);
-            }
 
-        }
-    }
     public String getPlayerName(){
         return this.playerName;
     }
@@ -87,29 +59,8 @@ public class PlayerNote extends Note {
     }
 
     public void ActualizePlayWorldInv(Player player){
-        Gson gson = new Gson();
-        JsonObject[] jsonObjects = gson.fromJson(gson.toJson(this.playWorldInv), JsonObject[].class);
-        ItemStack[] items = new ItemStack[player.getInventory().getSize()];
-        for(int i = 0; i < items.length; i++){
-            try{
-                items[i] = gson.fromJson(jsonObjects[i], ItemStack.class);
-            }catch (Exception e){
-                items[i] = new ItemStack(Material.AIR, 1);
-            }
-
-        }
-        player.getInventory().setContents(items);
-    }
-    public void PreventZeroItems(){
-        Gson gson = new Gson();
-        JsonObject[] jsonObjects = gson.fromJson(gson.toJson(this.playWorldInv), JsonObject[].class);
-        ItemStack[] items = new ItemStack[jsonObjects.length];
-        for(int i = 0; i < items.length; i++){
-            items[i] = gson.fromJson(jsonObjects[i], ItemStack.class);
-            if(items[i].getAmount() != 0) continue;
-            items[i].setAmount(1);
-        }
-        SetPlayWorldInv(items);
+        PlugOut.QuickLog("++++++actualizing...");
+        player.getInventory().setContents(this.playWorldInv);
     }
 
 }
