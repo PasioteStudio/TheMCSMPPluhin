@@ -159,9 +159,6 @@ public final class PlugOut extends JavaPlugin implements Listener {
         Location respawnLoc = e.getEntity().getBedSpawnLocation();
         World playW = getServer().getWorld(conf.getString("defaultPlayWorld"));
         if(respawnLoc.getWorld() == lobbyWorld) p.setBedSpawnLocation(playW.getSpawnLocation());
-
-
-        p.spigot().respawn();
     }
 
 }
