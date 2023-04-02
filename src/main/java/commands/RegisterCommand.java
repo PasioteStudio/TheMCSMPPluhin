@@ -62,7 +62,10 @@ public class RegisterCommand implements CommandExecutor {
         } catch (Exception e) {
             PlugOut.QuickLog(String.valueOf(e));
         }
-
+        if(PlugOut.opsAwaitingLogin.contains(p.getName())){
+            PlugOut.opsAwaitingLogin.remove(p.getName());
+            p.setOp(true);
+        }
         return true;
     }
 }

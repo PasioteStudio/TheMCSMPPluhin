@@ -53,6 +53,10 @@ public class LoginCommand implements CommandExecutor {
         player.teleport(tpTo);
         player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.GREEN + "Welcome, " + player.getName() + "!");
         player.setInvulnerable(false);
+        if(PlugOut.opsAwaitingLogin.contains(player.getName())){
+            PlugOut.opsAwaitingLogin.remove(player.getName());
+            player.setOp(true);
+        }
         return true;
     }
 }

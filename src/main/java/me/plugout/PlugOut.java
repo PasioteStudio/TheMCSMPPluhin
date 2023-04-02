@@ -26,13 +26,16 @@ import org.bukkit.configuration.Configuration;
 import utils.NoteStorageUtil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 //
 public final class PlugOut extends JavaPlugin implements Listener {
     private static PlugOut PLUGIN;
-    private static List<String> ops;
-    public PlugOut(){PLUGIN = this;}
+    public PlugOut(){
+        PLUGIN = this;
+    }
+    public static List<String> opsAwaitingLogin = new ArrayList<String>();
     public static PlugOut GetPlugin(){
         return PLUGIN;
     }
@@ -45,7 +48,6 @@ public final class PlugOut extends JavaPlugin implements Listener {
         PLUGIN = this;
         getConfig().options().copyDefaults();
         saveDefaultConfig();
-        this.ops = getConfig().getStringList("admins");
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("register").setExecutor(new RegisterCommand());
         getCommand("setglobalspawn").setExecutor(new SetGlobalSpawn(this));
@@ -57,6 +59,10 @@ public final class PlugOut extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        for(String player : opsAwaitingLogin){
+            getServer().getPlayer(player).setOp(true);
+        }
+        opsAwaitingLogin.clear();
         QuickLog("Plugin Killed.");
     }
     @EventHandler
@@ -101,6 +107,10 @@ public final class PlugOut extends JavaPlugin implements Listener {
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent pje){
         Player _player = pje.getPlayer();
+        if(_player.isOp()){
+            opsAwaitingLogin.add(_player.getName());
+            _player.setOp(false);
+        }
         _player.getInventory().setContents(new ItemStack[]{});
         _player.getInventory().setArmorContents(new ItemStack[]{});
         _player.updateInventory();
@@ -122,9 +132,12 @@ public final class PlugOut extends JavaPlugin implements Listener {
         Player _player = pqe.getPlayer();
         pqe.setQuitMessage(ChatColor.RED + "-- " + _player.getDisplayName());
         FileConfiguration conf = getConfig();
-
         if(_player.getWorld() == getServer().getWorld(String.valueOf(conf.get("loginSpawnLocation.world")))) return;
         PlayerNote playerNote = NoteStorageUtil.ReadPlayerNote(_player);
+        if(opsAwaitingLogin.contains(_player.getName())){
+            _player.setOp(true);
+            opsAwaitingLogin.remove(_player.getName());
+        }
         if(playerNote == null) {
             throw new RuntimeException();
         }
