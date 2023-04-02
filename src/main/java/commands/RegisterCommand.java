@@ -27,6 +27,7 @@ public class RegisterCommand implements CommandExecutor {
             p.sendMessage(
                     ChatColor.AQUA + "[Register] " + ChatColor.YELLOW + "There is an account with this name already. Try logging in with" + ChatColor.AQUA + " /login" + ChatColor.YELLOW + "!"
             );
+            p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
             return true;
         }
 

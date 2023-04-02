@@ -107,7 +107,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
     @EventHandler
     public void OnPlayerJoin(PlayerJoinEvent pje){
         Player _player = pje.getPlayer();
-        if(_player.isOp()){
+        if(_player.isOp() && getConfig().getBoolean("useLoginSpawn")){
             opsAwaitingLogin.add(_player.getName());
             _player.setOp(false);
         }
@@ -124,7 +124,9 @@ public final class PlugOut extends JavaPlugin implements Listener {
         String w = config.getString("loginSpawnLocation.world");
         World world = getServer().getWorld(w);
         _player.setInvulnerable(config.getBoolean("invulnerableInSpawnWorld"));
-        Location loc = new Location(world, x, y, z);
+        float yaw = (float)config.getDouble("loginSpawnLocation.yaw");
+        float pitch = (float)config.getDouble("loginSpawnLocation.pitch");
+        Location loc = new Location(world, x, y, z, yaw, pitch);
         _player.teleport(loc);
     }
     @EventHandler
@@ -145,6 +147,7 @@ public final class PlugOut extends JavaPlugin implements Listener {
         playerNote.playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
         Inventory inv = _player.getInventory();
         playerNote.playWorldInv = inv.getContents();
+        playerNote.yaw_pitch = new float[]{loc.getYaw(), loc.getPitch()};
         try {
             QuickLog("saving...");
             NoteStorageUtil.SavePlayerNote(playerNote);

@@ -6,6 +6,7 @@ import me.plugout.PlugOut;
 import models.PlayerNote;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,6 +31,7 @@ public class LoginCommand implements CommandExecutor {
         PlayerNote playerNote = NoteStorageUtil.ReadPlayerNote(player);
         if(playerNote == null){
             player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.YELLOW + "Try registering in with " + ChatColor.AQUA + "/register" + ChatColor.YELLOW + ".");
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
             return true;
         }
 
@@ -39,13 +41,15 @@ public class LoginCommand implements CommandExecutor {
         String hashed = playerNote.hashed_passw;
         if(!input_hashed.equals(hashed)){
             player.sendMessage(ChatColor.AQUA + "[Login] " + ChatColor.YELLOW + "Incorrect password. Try again.");
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
             return true;
         }
         PlugOut p = PlugOut.GetPlugin();
         FileConfiguration conf = p.getConfig();
         World world = p.getServer().getWorld(playerNote.lastPlayWorld);
         double[] pos = playerNote.playWorldPos;
-        Location tpTo = new Location(world, pos[0], pos[1], pos[2]);
+        float[] yaw_pitch = playerNote.yaw_pitch;
+        Location tpTo = new Location(world, pos[0], pos[1], pos[2], yaw_pitch[0], yaw_pitch[1]);
 
 
         playerNote.ActualizePlayWorldInv(player);

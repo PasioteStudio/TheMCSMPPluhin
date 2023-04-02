@@ -26,6 +26,7 @@ public class PlayerNote extends Note {
     public String playerName;
     public String hashed_passw;
     public double[] playWorldPos;
+    public float[] yaw_pitch = new float[]{0.0f,0.0f};
     public ItemStack[] playWorldInv;
     public String lastPlayWorld;
 
@@ -59,7 +60,6 @@ public class PlayerNote extends Note {
     }
 
     public void ActualizePlayWorldInv(Player player){
-        PlugOut.QuickLog("++++++actualizing...");
         player.getInventory().setContents(this.playWorldInv);
     }
 

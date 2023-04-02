@@ -30,6 +30,8 @@ public class SetGlobalSpawn implements CommandExecutor {
         // here is the info we need to save into config.yml under loginSpawnLocation
         String world = loc.getWorld().getName();
         double[] pos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
+        float yaw = loc.getYaw();
+        float pitch = loc.getPitch();
         if(args.length == 0) args = new String[]{""};
         // setting it
         if(args[0].equals("toggle")){
@@ -65,6 +67,8 @@ public class SetGlobalSpawn implements CommandExecutor {
         conf.set("loginSpawnLocation.y", pos[1]);
         conf.set("loginSpawnLocation.z", pos[2]);
         conf.set("loginSpawnLocation.world", world);
+        conf.set("loginSpawnLocation.yaw", yaw);
+        conf.set("loginSpawnLocation.pitch", pitch);
         plugin.saveConfig();
 
         p.sendMessage( ChatColor.GREEN + "Global spawnpoint set successfully!");
