@@ -4,10 +4,7 @@ import commands.*;
 import models.PlayerNote;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,15 +18,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.configuration.Configuration;
 import utils.NoteStorageUtil;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-//
 public final class PlugOut extends JavaPlugin implements Listener {
     private static PlugOut PLUGIN;
     public PlugOut(){
@@ -111,6 +103,19 @@ public final class PlugOut extends JavaPlugin implements Listener {
             opsAwaitingLogin.add(_player.getName());
             _player.setOp(false);
         }
+        if(_player.isDead()){
+            FileConfiguration config = getConfig();
+            double x = config.getDouble("loginSpawnLocation.x");
+            double y = config.getDouble("loginSpawnLocation.y");
+            double z = config.getDouble("loginSpawnLocation.z");
+            String w = config.getString("loginSpawnLocation.world");
+            World world = getServer().getWorld(w);
+            _player.setInvulnerable(config.getBoolean("invulnerableInSpawnWorld"));
+            float yaw = (float)config.getDouble("loginSpawnLocation.yaw");
+            float pitch = (float)config.getDouble("loginSpawnLocation.pitch");
+            Location loc = new Location(world, x, y, z, yaw, pitch);
+            _player.setBedSpawnLocation(loc, true);
+        }
         _player.getInventory().setContents(new ItemStack[]{});
         _player.getInventory().setArmorContents(new ItemStack[]{});
         _player.updateInventory();
@@ -143,11 +148,10 @@ public final class PlugOut extends JavaPlugin implements Listener {
         if(playerNote == null) {
             throw new RuntimeException();
         }
-        Location loc = _player.getLocation();
-        playerNote.playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
+        playerNote.playWorldLoc = _player.getLocation();
         Inventory inv = _player.getInventory();
         playerNote.playWorldInv = inv.getContents();
-        playerNote.yaw_pitch = new float[]{loc.getYaw(), loc.getPitch()};
+        playerNote.respawnLoc = _player.getBedSpawnLocation() != null ? _player.getBedSpawnLocation() : null;
         try {
             QuickLog("saving...");
             NoteStorageUtil.SavePlayerNote(playerNote);
@@ -155,27 +159,5 @@ public final class PlugOut extends JavaPlugin implements Listener {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
-    @EventHandler
-    public void OnPlayerDeath(PlayerDeathEvent e){
-        Player p = e.getEntity();
-        FileConfiguration conf = getConfig();
-        World deathWorld = e.getEntity().getWorld();
-        World lobbyWorld = getServer().getWorld(getConfig().getString("loginSpawnLocation.world"));
-        if(deathWorld == lobbyWorld) { // just in case the player dies in the lobby
-            double lobbyX = conf.getDouble("loginSpawnLocation.x");
-            double lobbyY = conf.getDouble("loginSpawnLocation.y");
-            double lobbyZ = conf.getDouble("loginSpawnLocation.z");
-            Location to = new Location(lobbyWorld, lobbyX, lobbyY, lobbyZ);
-            p.spigot().respawn();
-            p.teleport(to);
-            return;
-        }
-
-        Location respawnLoc = e.getEntity().getBedSpawnLocation();
-        World playW = getServer().getWorld(conf.getString("defaultPlayWorld"));
-        if(respawnLoc.getWorld() == lobbyWorld) p.setBedSpawnLocation(playW.getSpawnLocation());
-    }
-
 }

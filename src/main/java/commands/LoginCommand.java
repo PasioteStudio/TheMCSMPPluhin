@@ -46,10 +46,13 @@ public class LoginCommand implements CommandExecutor {
         }
         PlugOut p = PlugOut.GetPlugin();
         FileConfiguration conf = p.getConfig();
-        World world = p.getServer().getWorld(playerNote.lastPlayWorld);
-        double[] pos = playerNote.playWorldPos;
-        float[] yaw_pitch = playerNote.yaw_pitch;
-        Location tpTo = new Location(world, pos[0], pos[1], pos[2], yaw_pitch[0], yaw_pitch[1]);
+
+        Location tpTo = playerNote.playWorldLoc;
+
+        if(playerNote.respawnLoc != null) player.setBedSpawnLocation(playerNote.respawnLoc, true);
+        PlugOut.QuickLog("x: " + playerNote.respawnLoc.getX());
+        PlugOut.QuickLog("y: " + playerNote.respawnLoc.getY());
+        PlugOut.QuickLog("z: " + playerNote.respawnLoc.getZ());
 
 
         playerNote.ActualizePlayWorldInv(player);

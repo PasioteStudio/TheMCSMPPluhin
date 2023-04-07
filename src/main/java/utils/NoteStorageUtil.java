@@ -1,22 +1,12 @@
 package utils;
 
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import me.plugout.PlugOut;
-import models.Note;
 import models.PlayerNote;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.io.BukkitObjectOutputStream;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import javax.swing.text.Position;
 import java.io.*;
 import java.util.*;
 
@@ -52,12 +42,8 @@ public class NoteStorageUtil {
         _init(playerNote.getPlayerName());
         playerConfig.set("PlayerName", playerNote.playerName);
         playerConfig.set("Password", playerNote.hashed_passw);
-        playerConfig.set("Position.x", playerNote.playWorldPos[0]);
-        playerConfig.set("Position.yaw", playerNote.yaw_pitch[0]);
-        playerConfig.set("Position.pitch", playerNote.yaw_pitch[1]);
-        playerConfig.set("Position.y", playerNote.playWorldPos[1]);
-        playerConfig.set("Position.z", playerNote.playWorldPos[2]);
-        playerConfig.set("Position.world", playerNote.lastPlayWorld);
+        playerConfig.set("Loc", playerNote.playWorldLoc);
+        playerConfig.set("RespawnLoc", playerNote.respawnLoc != null ? playerNote.respawnLoc : null);
         for(int i = 0; i < playerNote.playWorldInv.length; i++){
             playerConfig.set("Inventory." + i, playerNote.playWorldInv[i] != null ? playerNote.playWorldInv[i].serialize() : new ItemStack(Material.AIR).serialize());
         }
@@ -77,18 +63,18 @@ public class NoteStorageUtil {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
         PlayerNote pNote = new PlayerNote(player.getName(), player);
         pNote.playerName = playerConfig.getString("PlayerName");
         pNote.hashed_passw = playerConfig.getString("Password");
-        pNote.playWorldPos = new double[]{
-                playerConfig.getDouble("Position.x"),
-                playerConfig.getDouble("Position.y"),
-                playerConfig.getDouble("Position.z"),
-        };
-        pNote.yaw_pitch[0] = (float)playerConfig.getDouble("Position.yaw");
-        pNote.yaw_pitch[1] = (float)playerConfig.getDouble("Position.pitch");
-        pNote.lastPlayWorld = playerConfig.getString("Position.world");
+        pNote.playWorldLoc = playerConfig.getLocation("Loc");
+        try{
+            pNote.respawnLoc = playerConfig.getLocation("RespawnLoc");
+        }catch (Exception e){
+            PlugOut.QuickLog("readnote - NULL");
+            pNote.respawnLoc = null;
+        }
+
+
         ItemStack[] arr = new ItemStack[player.getInventory().getSize()];
         for(int i = 0; i < arr.length; i++){
             arr[i] = ItemStack.deserialize(playerConfig.getConfigurationSection("Inventory." + i).getValues(false));

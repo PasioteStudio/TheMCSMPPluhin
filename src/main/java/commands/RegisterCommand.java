@@ -7,14 +7,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFactory;
-import org.bukkit.inventory.ItemStack;
 import utils.NoteStorageUtil;
-
-import java.io.IOException;
 
 public class RegisterCommand implements CommandExecutor {
     @Override
@@ -46,16 +41,14 @@ public class RegisterCommand implements CommandExecutor {
         World toWorld = PlugOut.GetPlugin().getServer().getWorld(conf.getString("defaultPlayWorld"));
         p.teleport(toWorld.getSpawnLocation());
         p.setInvulnerable(false);
-        p.setBedSpawnLocation(p.getLocation());
+        p.setBedSpawnLocation(p.getLocation(), true);
 
         Location loc = p.getLocation();
-        double[] playWorldPos = new double[]{loc.getX(), loc.getY(), loc.getZ()};
 
         Inventory playWorldInv = p.getInventory();
         playerNote.playWorldInv = playWorldInv.getContents();
 
-        playerNote.SetPlayWorldPos(playWorldPos);
-        playerNote.lastPlayWorld = conf.getString("defaultPlayWorld");
+        playerNote.playWorldLoc = loc;
 
         PlugOut.QuickLog("I'm about to save the note.");
         try {
