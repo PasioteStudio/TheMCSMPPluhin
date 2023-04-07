@@ -1,5 +1,5 @@
 name: PlugOut
-version: '1.0-SNAPSHOT'
+version: '1.1'
 main: me.plugout.PlugOut
 api-version: 1.19
 prefix: POU
